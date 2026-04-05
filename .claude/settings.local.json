@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export PATH=\"/usr/local/bin:/opt/homebrew/bin:$HOME/.nvm/versions/node/*/bin:$PATH\")",
+      "Bash(export PATH=\"/usr/local/bin:/opt/homebrew/bin:$PATH\")",
+      "Bash(npm install:*)",
+      "Bash(corepack enable:*)",
+      "Bash(corepack prepare:*)",
+      "Bash(npm config:*)",
+      "Bash(export PATH=\"$HOME/.npm-global/bin:$PATH\")",
+      "Bash(export PATH=\"$HOME/.npm-global/bin:/usr/local/bin:/opt/homebrew/bin:$PATH\")",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --use-pnpm --eslint)"
+    ]
+  }
+}
