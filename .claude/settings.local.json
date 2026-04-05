@@ -9,7 +9,8 @@
       "Bash(npm config:*)",
       "Bash(export PATH=\"$HOME/.npm-global/bin:$PATH\")",
       "Bash(export PATH=\"$HOME/.npm-global/bin:/usr/local/bin:/opt/homebrew/bin:$PATH\")",
-      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --use-pnpm --eslint)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --use-pnpm --eslint)",
+      "Bash(npx shadcn@latest init -d)"
     ]
   }
 }
