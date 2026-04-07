@@ -10,7 +10,12 @@
       "Bash(export PATH=\"$HOME/.npm-global/bin:$PATH\")",
       "Bash(export PATH=\"$HOME/.npm-global/bin:/usr/local/bin:/opt/homebrew/bin:$PATH\")",
       "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --use-pnpm --eslint)",
-      "Bash(npx shadcn@latest init -d)"
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm build:*)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Desktop_Commander__list_directory",
+      "Bash(find /Users/macbookair/Desktop/medgenii -maxdepth 1 -type f -name .env*)"
     ]
   }
 }
