@@ -49,6 +49,7 @@ import tempfile
 import time
 import uuid
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -126,46 +127,91 @@ def get_pending_reminders(reminder_type: str) -> list[dict[str, Any]]:
         return _fallback_select(reminder_type)
 
 
+_BASE_SELECT = (
+    "id, date_time, doctor_id, patient_id, duration_min,"
+    " conversation_opened_at, retry_count,"
+    " patients!inner(id, name, phone, language_pref, consent_whatsapp),"
+    " doctors(name)"
+)
+
+
 def _fallback_select(reminder_type: str) -> list[dict[str, Any]]:
-    """Fallback si les RPC Postgres ne sont pas encore créées."""
-    if reminder_type == "rappel_h18":
-        # RDV programmés dans ~18h, jamais notifiés H-18, consentement OK.
-        # Tranche horaire = créneau courant +17h30 -> +18h30 (cron horaire).
-        return _select_appointments(
-            extra_filter=(
-                "rappel_h18.eq.false,status.eq.scheduled,retry_count.lt.3"
-            ),
-        )
-    if reminder_type == "rappel_h2":
-        return _select_appointments(
-            extra_filter=(
-                "rappel_h2.eq.false,status.in.(scheduled,confirmed),retry_count.lt.3"
-            ),
-        )
-    if reminder_type == "post_consultation":
-        return _select_appointments(
-            extra_filter=(
-                "post_consultation_sent.eq.false,status.eq.completed,retry_count.lt.3"
-            ),
-        )
-    return []
+    """Fallback PostgREST si les RPC `pending_<type>` n'existent pas encore.
 
+    Chaque cas applique ses propres filtres temporels (fenêtres SQL encodées
+    en Python via datetime UTC) et ses propres bornes de statut. Aucune
+    string-concaténation de clauses — on utilise les helpers typés de
+    supabase-py, qui gèrent correctement les virgules dans les filtres
+    `in_()` (là où l'ancienne version se cassait sur `status.in.(a,b)`).
+    """
+    now = datetime.now(timezone.utc)
+    window_24h_ago = now - timedelta(hours=24)
 
-def _select_appointments(extra_filter: str) -> list[dict[str, Any]]:
-    """Helper PostgREST minimal — la logique temporelle reste dans les RPC."""
+    # Base commune : garde CNDP + limite retry. Le join `patients!inner`
+    # supprime les RDV dont le patient n'a pas consenti.
     query = (
         supabase.table("appointments")
-        .select(
-            "id, date_time, doctor_id, patient_id, duration_min,"
-            " conversation_opened_at, retry_count,"
-            " patients(name, phone, language_pref, consent_whatsapp),"
-            " doctors(name)"
-        )
+        .select(_BASE_SELECT)
+        .lt("retry_count", MAX_RETRY)
+        .eq("patients.consent_whatsapp", True)
     )
-    for clause in extra_filter.split(","):
-        col, op, value = clause.split(".", 2)
-        query = query.filter(col, op, value)
-    return query.execute().data or []
+
+    if reminder_type == "rappel_h18":
+        # RDV dans ~18h (créneau +17h30 -> +18h30).
+        lower = now + timedelta(hours=17, minutes=30)
+        upper = now + timedelta(hours=18, minutes=30)
+        query = (
+            query
+            .gte("date_time", lower.isoformat())
+            .lte("date_time", upper.isoformat())
+            .eq("rappel_h18", False)
+            .eq("status", "scheduled")
+        )
+        return query.execute().data or []
+
+    if reminder_type == "rappel_h2":
+        # RDV dans ~2h (créneau +1h30 -> +2h30).
+        # Fenêtre 24h Meta ouverte obligatoire (conversation_opened_at > now-24h).
+        lower = now + timedelta(hours=1, minutes=30)
+        upper = now + timedelta(hours=2, minutes=30)
+        query = (
+            query
+            .gte("date_time", lower.isoformat())
+            .lte("date_time", upper.isoformat())
+            .eq("rappel_h2", False)
+            .in_("status", ["scheduled", "confirmed"])
+            .filter("conversation_opened_at", "not.is", "null")
+            .gte("conversation_opened_at", window_24h_ago.isoformat())
+        )
+        return query.execute().data or []
+
+    if reminder_type == "post_consultation":
+        # RDV completed, fenêtre 24h encore ouverte, post-consult pas encore envoyé.
+        # Le filtre "2h après la fin du RDV" est appliqué côté Python après le
+        # fetch (SQL ne permet pas d'ajouter duration_min*interval en PostgREST).
+        query = (
+            query
+            .eq("status", "completed")
+            .eq("post_consultation_sent", False)
+            .filter("conversation_opened_at", "not.is", "null")
+            .gte("conversation_opened_at", window_24h_ago.isoformat())
+        )
+        rows = query.execute().data or []
+
+        cutoff = now - timedelta(hours=2)
+        filtered: list[dict[str, Any]] = []
+        for appt in rows:
+            try:
+                dt_str = (appt["date_time"] or "").replace("Z", "+00:00")
+                start = datetime.fromisoformat(dt_str)
+                duration = int(appt.get("duration_min") or 20)
+                if start + timedelta(minutes=duration) < cutoff:
+                    filtered.append(appt)
+            except Exception as exc:  # pragma: no cover - data malformée
+                log.warning("post_consultation : parsing date_time échoué (%s)", exc)
+        return filtered
+
+    return []
 
 
 def _has_active_consent(patient_id: str) -> bool:
