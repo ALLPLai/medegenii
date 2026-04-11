@@ -36,7 +36,8 @@ CREATE TABLE patients (
   name TEXT NOT NULL,
   phone TEXT NOT NULL,
   language_pref TEXT DEFAULT 'fr'
-    CHECK (language_pref IN ('fr','ar','darija')),
+    CHECK (language_pref IN ('fr','ar','darija','amazigh')),
+  consent_whatsapp BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -48,6 +49,8 @@ CREATE POLICY "patients_own_doctor" ON patients
 CREATE INDEX idx_patients_doctor ON patients(doctor_id);
 CREATE INDEX idx_patients_phone ON patients(phone);
 ```
+
+> Note : `language_pref` accepte désormais `amazigh` (tamazight). Le champ `consent_whatsapp` est vérifié par `reminder_worker.py` AVANT chaque envoi (conformité CNDP).
 
 ## Migration 00003 — appointments
 
@@ -62,6 +65,10 @@ CREATE TABLE appointments (
     CHECK (status IN ('scheduled','confirmed','cancelled','completed','no_show')),
   reminder_j1_sent BOOLEAN DEFAULT false,
   reminder_j0_sent BOOLEAN DEFAULT false,
+  rappel_h18 BOOLEAN DEFAULT false,
+  rappel_h2 BOOLEAN DEFAULT false,
+  post_consultation_sent BOOLEAN DEFAULT false,
+  conversation_opened_at TIMESTAMPTZ,
   patient_response TEXT
     CHECK (patient_response IN (NULL,'confirmed','reschedule','cancelled')),
   amount_mad NUMERIC(10,2),
@@ -70,6 +77,8 @@ CREATE TABLE appointments (
   payment_date TIMESTAMPTZ,
   relance_count INT DEFAULT 0,
   last_relance_at TIMESTAMPTZ,
+  retry_count INT DEFAULT 0,
+  last_error TEXT,
   notes TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
@@ -82,7 +91,11 @@ CREATE POLICY "appointments_own_doctor" ON appointments
 CREATE INDEX idx_appointments_doctor_date ON appointments(doctor_id, date_time);
 CREATE INDEX idx_appointments_status ON appointments(status);
 CREATE INDEX idx_appointments_payment ON appointments(payment_status);
+CREATE INDEX idx_appointments_conversation ON appointments(conversation_opened_at);
 ```
+
+> Note : `conversation_opened_at` est posé par `reminder_worker.py` lors du premier envoi (template H-18) afin d'optimiser la fenêtre 24h Meta — tous les rappels suivants (H-2, post_consultation) passent ainsi en utility gratuit.
+> `retry_count` (max 3) et `last_error` permettent la reprise automatique en cas d'échec WhatChimp/edge-tts/upload Storage.
 
 ## Migration 00004 — patient_consents
 
@@ -92,11 +105,64 @@ Voir docs/compliance-cndp.md pour le SQL complet.
 
 Voir docs/compliance-cndp.md pour le SQL complet.
 
+## Migration 00006 — fix_doctors_insert_policy
+
+Correctif RLS pour permettre l'insertion d'un médecin lors de l'inscription magic link.
+
+## Migration 00007 — add_master_subscription
+
+Ajout du flag `subscription_status` à 'active' pour le compte master en environnement dev.
+
+## Migration 00008 — voice_templates (brique WhatsApp vocal)
+
+Cette table stocke les modèles audio réutilisables (intro générique, formules de politesse, conseils santé) générés une seule fois via edge-tts puis uploadés sur Supabase Storage. Le worker Python pioche dedans pour composer les rappels.
+
+```sql
+CREATE TABLE voice_templates (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  type TEXT NOT NULL
+    CHECK (type IN ('rappel_h18','rappel_h2','post_consultation','intro','outro')),
+  language TEXT NOT NULL DEFAULT 'darija'
+    CHECK (language IN ('fr','ar','darija','amazigh')),
+  audio_url TEXT NOT NULL,
+  text_template TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_voice_templates_type_lang ON voice_templates(type, language);
+```
+
+> Pas de RLS : table partagée en lecture seule entre tous les médecins. Écriture réservée au service_role (admin).
+
+## Migration 00009 — reminder_logs (observabilité worker Python)
+
+```sql
+CREATE TABLE reminder_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  appointment_id UUID REFERENCES appointments(id) ON DELETE CASCADE,
+  reminder_type TEXT NOT NULL
+    CHECK (reminder_type IN ('rappel_h18','rappel_h2','post_consultation')),
+  status TEXT NOT NULL
+    CHECK (status IN ('success','error','skipped_no_consent','skipped_dedup')),
+  whatchimp_message_id TEXT,
+  audio_url TEXT,
+  error_message TEXT,
+  duration_ms INTEGER,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_reminder_logs_appointment ON reminder_logs(appointment_id);
+CREATE INDEX idx_reminder_logs_created ON reminder_logs(created_at);
+CREATE INDEX idx_reminder_logs_status ON reminder_logs(status);
+```
+
+> Pas de RLS : table d'observabilité, lue uniquement par le worker (service_role) et un éventuel dashboard admin.
+
 ## Migrations futures (NE PAS CRÉER MAINTENANT)
 
 Ces migrations seront créées quand la brique correspondante sera activée :
 
-### 00006 — consultations (Brick 2-3)
+### 00010 — consultations (Brick 2-3)
 
 ```sql
 -- NE PAS EXÉCUTER — référence future uniquement
@@ -118,7 +184,7 @@ CREATE POLICY "consultations_own_doctor" ON consultations
   FOR ALL USING (doctor_id = auth.uid());
 ```
 
-### 00007 — messages (Brick 4)
+### 00011 — messages (Brick 4)
 
 ```sql
 -- NE PAS EXÉCUTER — référence future uniquement
@@ -141,7 +207,7 @@ CREATE POLICY "messages_own_doctor" ON messages
   );
 ```
 
-### 00008 — drug_interactions (Brick 5)
+### 00012 — drug_interactions (Brick 5)
 
 ```sql
 -- NE PAS EXÉCUTER — référence future uniquement
@@ -156,7 +222,7 @@ CREATE TABLE drug_interactions (
 );
 ```
 
-### 00009 — embeddings (Brick 7)
+### 00013 — embeddings (Brick 7)
 
 ```sql
 -- NE PAS EXÉCUTER — référence future uniquement
@@ -167,7 +233,7 @@ CREATE INDEX idx_consultations_embedding ON consultations
   USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
 ```
 
-### 00010 — imaging_results (Brick 8)
+### 00014 — imaging_results (Brick 8)
 
 ```sql
 -- NE PAS EXÉCUTER — référence future uniquement

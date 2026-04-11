@@ -1,81 +1,89 @@
 # Roadmap briques — Medegenii
 
 Chaque brique ajoute une fonctionnalité sans casser les précédentes.
-Base constante : Next.js dashboard + Supabase + n8n + WhatsApp.
+Base constante : Next.js dashboard + Supabase + script Python + WhatsApp (WhatChimp).
 Architecture modulaire : chaque brique = un module dans /src/modules/.
 
-## Brick 0 — Anti no-show (Jour 1-2) ACTIF
+## Brick 0 — Anti no-show WhatsApp texte + audio (EN COURS) ACTIF
 
-Création RDV dans le dashboard → 2 rappels WhatsApp automatiques (J-1 à 20h, J-0 à H-2).
+Création RDV dans le dashboard → 3 messages WhatsApp automatiques dans la fenêtre 24h Meta :
+- **H-18** : template texte + audio darija (ouvre la fenêtre)
+- **H-2** : texte court (gratuit, dans la fenêtre)
+- **Post-consultation** : satisfaction + conseil santé (gratuit, dans la fenêtre)
+
 Patient confirme (1) ou reporte (2) par WhatsApp.
 Taux de confirmation visible en temps réel sur le dashboard.
 
 Module : `/src/modules/appointments/`
-Workflow n8n : rappel-rdv-j1, rappel-rdv-j0, reponse-patient
-Tables : doctors, patients, appointments
-Coût additionnel : ~$0 (service messages gratuits si patient initie, sinon ~$0.026/msg)
+Worker : `scripts/reminder_worker.py` (cron horaire sur 91.106.102.37)
+Tables : doctors, patients, appointments, voice_templates, reminder_logs
+Coût additionnel : ~0,26 MAD/RDV (1 template Meta) — utility gratuit dans la fenêtre
 
-## Brick 1 — Relance paiement (Semaine 2) ACTIF
+## Brick 1 — FSE CNSS pré-remplie (PROCHAIN) Phase 2
 
-Champs montant (amount_mad) et statut (payment_status) sur les RDV.
-Dashboard : rouge = impayé, vert = payé.
-Relances WhatsApp automatiques à J+3 et J+7 (max 2 relances).
+À partir des données du RDV (codes CIM-10, actes NGAP, médicaments) :
+génération d'un PDF pré-rempli pour la feuille de soins CNSS (formulaire 610-1-02).
+Saisie des actes avec codes NGAP et tarifs CNSS intégrés.
 
-Module : `/src/modules/billing/`
-Workflow n8n : relance-paiement
-Colonnes ajoutées : amount_mad, payment_status, payment_date, relance_count, last_relance_at
-Coût additionnel : $0
+Module : `/src/modules/cnss-fse/`
+Tables ajoutées : consultations, consultation_acts, reference_acts
+Coût additionnel : $0 (génération PDF locale)
 
-## Brick 2 — Transcription vocale (Semaines 3-4) — Phase 2
+## Brick 2 — Intégration API CNSS (EN ATTENTE SANDBOX) Phase 3
+
+Remplacement du PDF par la télétransmission directe via l'API CNSS Netopia.
+Candidature en cours auprès de fse@cnss.ma pour accès sandbox + homologation.
+
+Module : `/src/modules/cnss-api/`
+Coût additionnel : $0 (API CNSS gratuite après homologation)
+
+## Brick 3 — Transcription vocale (Phase 4)
 
 Médecin enregistre la consultation dans l'app (MediaRecorder API).
-Audio → Supabase Storage → n8n → Groq Whisper → texte éditable dans le dashboard.
+Audio → Supabase Storage → worker → Groq Whisper → texte éditable dans le dashboard.
 
 Module : `/src/modules/transcription/`
-Workflow n8n : transcription
-Table : consultations (audio_url, transcript)
+Table : consultations.transcript
 Coût : ~$7/mois (Groq Whisper API)
 
-## Brick 3 — Résumé structuré IA (Semaines 4-5) — Phase 2
+## Brick 4 — Résumé structuré IA (Phase 4)
 
 Transcript validé → Gemini Flash-Lite → JSON structuré (motif, examen, diagnostic, traitement, suivi).
 Médecin valide le résumé avant envoi.
 
 Module : `/src/modules/summary/`
-Workflow n8n : resume-structure
 Colonne ajoutée : consultations.summary_json
 Coût : ~$2/mois (Gemini Flash-Lite API)
 
-## Brick 4 — Message vocal patient (Semaines 5-6) — Phase 3
+## Brick 5 — Relance impayés automatique (Phase future)
 
-Résumé validé → script patient (FR/Darija) → Gemini TTS → .ogg → WhatsApp vocal.
-Le patient écoute les instructions post-consultation en vocal.
+Champs montant (amount_mad) et statut (payment_status) sur les RDV.
+Dashboard : violet = impayé, bleu = payé.
+Relances WhatsApp automatiques à J+3 et J+7 (max 2 relances) via le même `reminder_worker.py`.
 
-Module : `/src/modules/vocal/`
-Workflow n8n : vocal-patient
-Table : messages (consultation_id, patient_id, channel, type, sent_at, played_at)
-Coût : ~$25/mois (Gemini TTS API)
+Module : `/src/modules/billing/` (existe déjà côté UI, worker à activer)
+Worker : ajout de `get_unpaid_j3()` et `get_unpaid_j7()` dans `reminder_worker.py`
+Colonnes existantes : amount_mad, payment_status, payment_date, relance_count, last_relance_at
+Coût additionnel : ~0,26 MAD par relance (template Meta)
 
-## Brick 5 — Vérification interactions médicamenteuses (Mois 2-3) — Phase 3
+## Brick 6 — Chatbot patient WhatsApp (Phase future)
+
+Webhook entrant WhatChimp → réponses automatiques (confirmation/annulation/info pratique).
+Statut RDV mis à jour automatiquement via le worker.
+
+Module : `/src/modules/chatbot/`
+Coût : $0 (utility gratuit dans la fenêtre)
+
+## Brick 7 — Vérification interactions médicamenteuses (Phase 5)
 
 Appel API DrugBank en parallèle lors du résumé.
 Alerte rouge dans le dashboard si conflit entre médicaments prescrits.
 
 Module : `/src/modules/drug-check/`
-Workflow n8n : drug-interaction-check
-Table : drug_interactions (consultation_id, drug_a, drug_b, severity, description)
+Table : drug_interactions
 Coût : ~$50/mois (DrugBank API)
 
-## Brick 6 — Formulaires CNSS/CNOPS (Mois 3) — Phase 3
-
-À partir du JSON summary (codes CIM-10, actes NGAP, médicaments) :
-Gemini génère un PDF pré-rempli pour le remboursement mutualiste.
-
-Module : `/src/modules/forms/`
-Workflow n8n : generate-cnss-form
-Coût : $0 (utilise Gemini Flash-Lite déjà payé)
-
-## Brick 7 — Dossier patient intelligent (Mois 4-5) — Phase 4
+## Brick 8 — Dossier patient intelligent (Phase 6)
 
 Tous les résumés vectorisés avec Gemini Embedding, stockés dans pgvector (Supabase).
 Requêtes en langage naturel : "Quand est-ce que ce patient a eu de l'hypertension ?"
@@ -84,31 +92,58 @@ Module : `/src/modules/patient-history/`
 Migration : ADD COLUMN embedding vector(768) sur consultations
 Coût : ~$2/mois (Gemini Embedding API)
 
-## Brick 8 — Copilote diagnostic + imagerie (Mois 6+) — Phase 4
+## Brick 9 — Copilote diagnostic + imagerie (Phase 6)
 
 Suggestions diagnostiques basées sur les symptômes et l'historique vectorisé.
 Analyse d'images médicales (dermato, radio) via MedGemma 1.5.
 
 Module : `/src/modules/imaging/`
-Table : imaging_results (consultation_id, image_url, analysis_json, model_used)
+Table : imaging_results
 Coût : $5-50/mois selon volume
 
-## Pricing cumulatif pour le médecin (MAD/mois)
+---
 
-| Briques incluses | Prix | Proposition de valeur |
-|-----------------|------|----------------------|
-| 0 (rappels seuls) | 300 | Réduit le no-show de 30-50% |
-| 0+1 (+ paiements) | 500 | Récupère les impayés |
-| 0-3 (+ transcription + résumé) | 700 | Gagne ~1h/jour en admin |
-| 0-4 (+ vocal patient) | 900 | Patient recommande le médecin |
-| 0-7 (tout sauf copilote) | 1100 | Le cabinet tourne quasi-seul |
-| 0-8 (copilote IA complet) | 1200 | Assistant IA intégré |
+## Pricing — Offres commerciales
 
-## Coût infra mensuel
+### Essentiel — 399 MAD/mois par médecin ✅ ACTIVE
 
-| Phase | Coût approx. | Seuil de rentabilité |
-|-------|-------------|---------------------|
-| Phase 1 (bricks 0-1) | ~$30-50 | 2 médecins à 500 MAD |
-| Phase 2 (bricks 0-3) | ~$60-80 | 3 médecins à 700 MAD |
-| Phase 3 (bricks 0-6) | ~$120-150 | 5 médecins à 900 MAD |
-| Phase 4 (bricks 0-8) | ~$150-200 | 6 médecins à 1200 MAD |
+- Rappels WhatsApp texte + audio darija (3 messages dans la fenêtre 24h)
+  - H-18 : template texte + audio (ouvre la fenêtre Meta)
+  - H-2 : texte court (gratuit dans la fenêtre)
+  - Post-consultation : satisfaction / conseil santé (gratuit dans la fenêtre)
+- Gestion rendez-vous & patients
+- Dashboard taux de no-show
+- Cap : 500 patients actifs / mois
+- 1 médecin + 1 secrétaire par abonnement
+
+### Pro — 799 MAD/mois par médecin 🔜 BIENTÔT
+
+- Tout Essentiel +
+- FSE CNSS pré-remplie (PDF puis télétransmission API)
+- Codes actes NGAP avec tarifs CNSS intégrés
+- Statistiques avancées (revenus, remboursements, actes)
+- Cap : 1 500 patients actifs / mois
+
+### Clinique — Sur devis 🔜 BIENTÔT
+
+- Tout Pro +
+- Multi-praticiens illimités
+- Dashboard consolidé
+- Reporting par spécialité
+- Support prioritaire
+
+---
+
+## Coûts mensuels (pour 20 médecins, ~500 patients/médecin)
+
+| Poste | Coût |
+|---|---|
+| WhatChimp (BSP Meta, mutualisé) | 120 MAD ($12) |
+| Conversations Meta (~10 000 conv, fenêtre 24h optimisée) | ~3 000 MAD |
+| Vercel (hosting Next.js) | 0 MAD (tier gratuit) |
+| Supabase (DB + Storage) | 0 MAD (tier gratuit) |
+| Serveur 91.106.102.37 (cron + scripts) | déjà payé |
+| edge-tts + ffmpeg | 0 MAD |
+| **Total** | **~3 120 MAD/mois** |
+| **Revenu (20 × 399 MAD)** | **7 980 MAD/mois** |
+| **Marge brute** | **~4 860 MAD/mois (61%)** |
