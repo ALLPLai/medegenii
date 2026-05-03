@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-cormorant), Georgia, serif;
+  --font-mono: ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,42 +48,55 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ── Zellige Digital — dark theme (global default for landing) ──────────── */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.541 0.281 293.009);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.541 0.281 293.009);
-  --chart-1: oklch(0.541 0.281 293.009);
-  --chart-2: oklch(0.488 0.243 264.376);
+  /* Brand palette */
+  --z-night:      #0C0F1D;
+  --z-surface:    #111827;
+  --z-navy:       #1A2744;
+  --z-gold:       #F5A623;
+  --z-gold-light: #FFC554;
+  --z-sand:       #E8DED0;
+  --z-muted:      #8A9BB0;
+  --z-border:     rgba(245,166,35,0.14);
+
+  /* shadcn tokens — dark (landing stays dark) */
+  --background: #0C0F1D;
+  --foreground: #E8DED0;
+  --card: #111827;
+  --card-foreground: #E8DED0;
+  --popover: #111827;
+  --popover-foreground: #E8DED0;
+  --primary: #F5A623;
+  --primary-foreground: #0C0F1D;
+  --secondary: #1A2744;
+  --secondary-foreground: #E8DED0;
+  --muted: #1A2744;
+  --muted-foreground: #8A9BB0;
+  --accent: #1A2744;
+  --accent-foreground: #F5A623;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgba(245,166,35,0.14);
+  --input: rgba(245,166,35,0.10);
+  --ring: #F5A623;
+  --chart-1: #F5A623;
+  --chart-2: #FFC554;
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.541 0.281 293.009);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #111827;
+  --sidebar-foreground: #E8DED0;
+  --sidebar-primary: #F5A623;
+  --sidebar-primary-foreground: #0C0F1D;
+  --sidebar-accent: #1A2744;
+  --sidebar-accent-foreground: #E8DED0;
+  --sidebar-border: rgba(245,166,35,0.14);
+  --sidebar-ring: #F5A623;
 }
 
-.dark {
+/* Dashboard (inside /dashboard) overrides — keep violet theme */
+.theme-dashboard {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -129,7 +142,43 @@
   }
 }
 
-/* Hero animations */
+/* ── Zellige Digital utilities ──────────────────────────────────────────── */
+.font-heading { font-family: var(--font-cormorant), Georgia, serif; }
+.font-body    { font-family: var(--font-dm-sans), ui-sans-serif, sans-serif; }
+
+/* Gold glow for key numbers */
+.text-gold       { color: var(--z-gold); }
+.text-gold-light { color: var(--z-gold-light); }
+.text-sand       { color: var(--z-sand); }
+.text-muted-z    { color: var(--z-muted); }
+.bg-night        { background-color: var(--z-night); }
+.bg-surface      { background-color: var(--z-surface); }
+.bg-navy         { background-color: var(--z-navy); }
+.border-gold     { border-color: var(--z-border); }
+
+.gold-glow {
+  text-shadow: 0 0 40px rgba(245,166,35,0.35), 0 0 80px rgba(245,166,35,0.15);
+}
+.gold-glow-sm {
+  text-shadow: 0 0 20px rgba(245,166,35,0.3);
+}
+.card-zellige {
+  background: var(--z-surface);
+  border: 1px solid var(--z-border);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.card-zellige:hover {
+  border-color: rgba(245,166,35,0.35);
+  box-shadow: 0 0 30px rgba(245,166,35,0.06);
+}
+
+/* Gold horizontal rule */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,166,35,0.4), transparent);
+}
+
+/* Legacy hero animations */
 @keyframes hero-appear {
   from {
     opacity: 0;

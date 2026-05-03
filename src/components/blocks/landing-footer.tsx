@@ -1,61 +1,67 @@
+"use client"
+
 import Link from "next/link"
-import { Logo } from "@/components/logo"
 import { ArrowRight } from "lucide-react"
+import { ZelligePattern } from "@/components/zellige-pattern"
 
 export function LandingFooter() {
   return (
-    <footer className="relative overflow-hidden">
-      {/* Same gradient style as hero */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-t from-violet-50 via-violet-50/40 to-white" />
-        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] translate-y-1/4 -translate-x-1/4 rounded-full bg-gradient-to-br from-violet-200/50 to-blue-200/30 blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 h-[400px] w-[400px] translate-x-1/3 rounded-full bg-gradient-to-br from-cyan-200/30 to-emerald-200/20 blur-3xl" />
-      </div>
+    <footer className="relative overflow-hidden bg-[#0C0F1D]">
+      <div className="divider-gold mx-auto max-w-6xl px-6" />
 
       {/* CTA section */}
-      <section className="relative py-20 md:py-28">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-extrabold leading-tight tracking-[-0.02em] text-slate-900">
-            Prêt à transformer votre cabinet ?
-          </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-slate-500">
-            Essai gratuit. Aucune carte bancaire. Démarrage en 2 minutes.
+      <section className="relative py-24 md:py-32">
+        <ZelligePattern opacity={0.04} />
+        {/* Gold center glow */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5A623]/5 blur-[100px]" />
+
+        <div className="relative mx-auto max-w-2xl px-6 text-center">
+          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F5A623]">
+            Prêt ?
           </p>
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <h2 className="font-heading text-[clamp(2rem,5vw,3.8rem)] font-light leading-tight text-[#E8DED0]">
+            Transformez votre cabinet <em className="italic text-[#F5A623]">dès aujourd&apos;hui</em>
+          </h2>
+          <p className="mt-4 text-[15px] leading-relaxed text-[#8A9BB0]">
+            Essai gratuit. Aucune carte bancaire. Démarrage en 3 minutes.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/login"
-              className="group inline-flex h-11 items-center gap-2 rounded-xl bg-violet-600 px-5 text-[14px] font-semibold text-white shadow-md shadow-violet-600/20 transition-all hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-600/25"
+              className="group inline-flex h-12 items-center gap-2 rounded-xl bg-[#F5A623] px-7 text-[15px] font-semibold text-[#0C0F1D] shadow-xl shadow-[#F5A623]/20 transition-all hover:bg-[#FFC554] hover:shadow-[#F5A623]/30"
             >
-              Commencer maintenant
-              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              Commencer gratuitement
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-[14px] font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50"
+            <a
+              href="mailto:contact@medgenii.app"
+              className="inline-flex h-12 items-center rounded-xl border border-[#F5A623]/20 px-7 text-[15px] font-medium text-[#E8DED0] transition-all hover:border-[#F5A623]/40 hover:bg-[#F5A623]/5"
             >
-              Voir les tarifs
-            </Link>
+              Parler à l&apos;équipe
+            </a>
           </div>
         </div>
       </section>
 
       {/* Bottom bar */}
-      <div className="relative border-t border-slate-200/60">
+      <div className="border-t border-[rgba(245,166,35,0.10)]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
-          <div className="flex items-center gap-2">
-            <Logo size={22} />
-            <span className="text-[13px] font-semibold text-slate-900">Medgenii</span>
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-[#F5A623]/30 bg-[#F5A623]/10">
+              <span className="font-heading text-[13px] font-bold italic text-[#F5A623]">M</span>
+            </div>
+            <span className="font-heading text-[15px] font-semibold tracking-wide text-[#E8DED0]">Medgenii</span>
           </div>
+
           <div className="flex items-center gap-6">
-            <Link href="/pricing" className="text-[12px] font-medium text-slate-500 transition-colors hover:text-slate-900">
-              Tarifs
-            </Link>
-            <a href="mailto:contact@medgenii.app" className="text-[12px] font-medium text-slate-500 transition-colors hover:text-slate-900">
-              Contact
-            </a>
+            {[["Fonctionnalités","#features"],["Tarifs","#pricing"],["Contact","mailto:contact@medgenii.app"]].map(([label,href]) => (
+              <a key={label} href={href} className="text-[12px] text-[#8A9BB0] transition-colors hover:text-[#E8DED0]">{label}</a>
+            ))}
           </div>
-          <p className="text-[11px] text-slate-400">
-            &copy; {new Date().getFullYear()} Medgenii &middot; Conforme CNDP &middot; Données UE
+
+          <p className="text-[11px] text-[#8A9BB0]">
+            © {new Date().getFullYear()} Medgenii &middot; Conforme CNDP &middot; Données UE
           </p>
         </div>
       </div>
