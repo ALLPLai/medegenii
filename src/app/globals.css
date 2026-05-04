@@ -48,51 +48,57 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── Zellige Digital — dark theme (global default for landing) ──────────── */
+/* ── Zellige Warm — palette inspirée des riads marocains ───────────────── */
+/*
+  Ambiance : riad la nuit, lanterne en laiton, enduit tadelakt, mosaïque zellige.
+  Fond : espresso chaud (pas de navy froid).
+  Accents : safran profond · terracotta cuivré · ivoire chaud.
+*/
 :root {
-  /* Brand palette */
-  --z-night:      #0C0F1D;
-  --z-surface:    #111827;
-  --z-navy:       #1A2744;
-  --z-gold:       #F5A623;
-  --z-gold-light: #FFC554;
-  --z-sand:       #E8DED0;
-  --z-muted:      #8A9BB0;
-  --z-border:     rgba(245,166,35,0.14);
+  /* Brand palette — warm Moroccan */
+  --z-night:      #0F0B06;   /* espresso foncé — remplace navy froid */
+  --z-surface:    #1E1409;   /* tadelakt sombre */
+  --z-warm:       #2C1A0A;   /* tadelakt moyen */
+  --z-gold:       #F0A020;   /* safran — plus chaud que F5A623 */
+  --z-gold-light: #FFB830;   /* or clair cuivré */
+  --z-copper:     #C86828;   /* terracotta / cuivre */
+  --z-ivory:      #F2E9D6;   /* ivoire chaud — remplace sand froid */
+  --z-taupe:      #9A8C74;   /* taupe chaud — remplace blue-grey */
+  --z-border:     rgba(240,160,32,0.16);
 
-  /* shadcn tokens — dark (landing stays dark) */
-  --background: #0C0F1D;
-  --foreground: #E8DED0;
-  --card: #111827;
-  --card-foreground: #E8DED0;
-  --popover: #111827;
-  --popover-foreground: #E8DED0;
-  --primary: #F5A623;
-  --primary-foreground: #0C0F1D;
-  --secondary: #1A2744;
-  --secondary-foreground: #E8DED0;
-  --muted: #1A2744;
-  --muted-foreground: #8A9BB0;
-  --accent: #1A2744;
-  --accent-foreground: #F5A623;
+  /* shadcn tokens remappés au warm palette */
+  --background: #0F0B06;
+  --foreground: #F2E9D6;
+  --card: #1E1409;
+  --card-foreground: #F2E9D6;
+  --popover: #1E1409;
+  --popover-foreground: #F2E9D6;
+  --primary: #F0A020;
+  --primary-foreground: #0F0B06;
+  --secondary: #2C1A0A;
+  --secondary-foreground: #F2E9D6;
+  --muted: #2C1A0A;
+  --muted-foreground: #9A8C74;
+  --accent: #2C1A0A;
+  --accent-foreground: #F0A020;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgba(245,166,35,0.14);
-  --input: rgba(245,166,35,0.10);
-  --ring: #F5A623;
-  --chart-1: #F5A623;
-  --chart-2: #FFC554;
-  --chart-3: oklch(0.439 0 0);
+  --border: rgba(240,160,32,0.16);
+  --input: rgba(240,160,32,0.10);
+  --ring: #F0A020;
+  --chart-1: #F0A020;
+  --chart-2: #FFB830;
+  --chart-3: #C86828;
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: #111827;
-  --sidebar-foreground: #E8DED0;
-  --sidebar-primary: #F5A623;
-  --sidebar-primary-foreground: #0C0F1D;
-  --sidebar-accent: #1A2744;
-  --sidebar-accent-foreground: #E8DED0;
-  --sidebar-border: rgba(245,166,35,0.14);
-  --sidebar-ring: #F5A623;
+  --sidebar: #1E1409;
+  --sidebar-foreground: #F2E9D6;
+  --sidebar-primary: #F0A020;
+  --sidebar-primary-foreground: #0F0B06;
+  --sidebar-accent: #2C1A0A;
+  --sidebar-accent-foreground: #F2E9D6;
+  --sidebar-border: rgba(240,160,32,0.16);
+  --sidebar-ring: #F0A020;
 }
 
 /* Dashboard (inside /dashboard) overrides — keep violet theme */
@@ -157,10 +163,10 @@
 .border-gold     { border-color: var(--z-border); }
 
 .gold-glow {
-  text-shadow: 0 0 40px rgba(245,166,35,0.35), 0 0 80px rgba(245,166,35,0.15);
+  text-shadow: 0 0 40px rgba(240,160,32,0.45), 0 0 80px rgba(200,104,40,0.2);
 }
 .gold-glow-sm {
-  text-shadow: 0 0 20px rgba(245,166,35,0.3);
+  text-shadow: 0 0 20px rgba(240,160,32,0.35);
 }
 .card-zellige {
   background: var(--z-surface);
@@ -168,14 +174,14 @@
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 .card-zellige:hover {
-  border-color: rgba(245,166,35,0.35);
-  box-shadow: 0 0 30px rgba(245,166,35,0.06);
+  border-color: rgba(240,160,32,0.35);
+  box-shadow: 0 0 30px rgba(200,104,40,0.08);
 }
 
 /* Gold horizontal rule */
 .divider-gold {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245,166,35,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(240,160,32,0.5) 40%, rgba(200,104,40,0.3) 60%, transparent);
 }
 
 /* ── Keyframes ──────────────────────────────────────────────────────────── */
@@ -228,12 +234,12 @@
   to   { opacity: 1; transform: translateY(0);     }
 }
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(245,166,35,0.15), 0 0 60px rgba(245,166,35,0.05); }
-  50%       { box-shadow: 0 0 40px rgba(245,166,35,0.35), 0 0 100px rgba(245,166,35,0.12); }
+  0%, 100% { box-shadow: 0 0 25px rgba(240,160,32,0.18), 0 0 70px rgba(200,104,40,0.08); }
+  50%       { box-shadow: 0 0 50px rgba(240,160,32,0.38), 0 0 120px rgba(200,104,40,0.15); }
 }
 @keyframes border-glow {
-  0%, 100% { border-color: rgba(245,166,35,0.3); }
-  50%       { border-color: rgba(245,166,35,0.7); }
+  0%, 100% { border-color: rgba(240,160,32,0.30); }
+  50%       { border-color: rgba(240,160,32,0.75); }
 }
 @keyframes reveal-line {
   from { transform: scaleX(0); opacity: 0; }
@@ -242,13 +248,20 @@
 
 /* ── CSS animation utilities ────────────────────────────────────────────── */
 .shimmer-gold {
+  /* Safran → or cuivré → blanc chaud → or → safran — chaleur riad */
   background: linear-gradient(90deg,
-    #E8840A 0%, #F5A623 25%, #FFD580 50%, #F5A623 75%, #E8840A 100%);
+    #A85A08 0%,
+    #E8900A 18%,
+    #F5B020 35%,
+    #FFD878 50%,
+    #F5B020 65%,
+    #E8900A 82%,
+    #A85A08 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer-anim 3s linear infinite;
+  animation: shimmer-anim 3.5s linear infinite;
 }
 
 .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }

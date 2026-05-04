@@ -18,7 +18,11 @@
       "Bash(find /Users/macbookair/Desktop/medgenii -maxdepth 1 -type f -name .env*)",
       "Bash(pnpm typecheck *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pnpm dev *)",
+      "Read(//tmp/**)"
     ]
   }
 }

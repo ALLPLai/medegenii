@@ -51,7 +51,7 @@ export function HowItWorks() {
     <section
       id="how-it-works"
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#0C0F1D] py-28 md:py-36"
+      className="relative overflow-hidden bg-[#0F0B06] py-28 md:py-36"
     >
       {/* Top divider */}
       <div className="divider-gold mx-auto mb-20 max-w-6xl px-6" />
@@ -59,15 +59,15 @@ export function HowItWorks() {
       <div className="mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="sr-hidden mx-auto mb-20 max-w-xl text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F5A623]">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F0A020]">
             Comment ça marche
           </p>
           <h2
-            className="font-heading font-light leading-tight text-[#E8DED0]"
+            className="font-heading font-light leading-tight text-[#F2E9D6]"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.2rem)" }}
           >
             Simple comme envoyer un{" "}
-            <em className="italic text-[#F5A623]">WhatsApp</em>
+            <em className="italic text-[#F0A020]">WhatsApp</em>
           </h2>
         </div>
 
@@ -78,7 +78,7 @@ export function HowItWorks() {
             className="absolute left-0 right-0 top-[52px] hidden h-px md:block"
             style={{
               background:
-                "linear-gradient(90deg, transparent 6%, rgba(245,166,35,0.15) 20%, rgba(245,166,35,0.15) 80%, transparent 94%)",
+                "linear-gradient(90deg, transparent 6%, rgba(240,160,32,0.15) 20%, rgba(240,160,32,0.15) 80%, transparent 94%)",
             }}
           />
 
@@ -92,15 +92,15 @@ export function HowItWorks() {
                 {/* Icon badge row */}
                 <div className="mb-6 flex items-center gap-4">
                   <div
-                    className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(245,166,35,0.25)]"
+                    className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(240,160,32,0.25)]"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(245,166,35,0.15) 0%, rgba(245,166,35,0.05) 100%)",
-                      border: "1px solid rgba(245,166,35,0.3)",
+                        "linear-gradient(135deg, rgba(240,160,32,0.15) 0%, rgba(240,160,32,0.05) 100%)",
+                      border: "1px solid rgba(240,160,32,0.3)",
                     }}
                   >
-                    <Icon className="h-5 w-5 text-[#F5A623]" />
-                    <span className="pointer-events-none absolute -right-1 -top-3 font-heading text-[10px] font-bold text-[#F5A623]/50">
+                    <Icon className="h-5 w-5 text-[#F0A020]" />
+                    <span className="pointer-events-none absolute -right-1 -top-3 font-heading text-[10px] font-bold text-[#F0A020]/50">
                       {number}
                     </span>
                   </div>
@@ -110,7 +110,7 @@ export function HowItWorks() {
                     <div className="hidden flex-1 items-center justify-end pr-2 md:flex">
                       <svg
                         viewBox="0 0 16 16"
-                        className="h-3.5 w-3.5 text-[#F5A623]/30"
+                        className="h-3.5 w-3.5 text-[#F0A020]/30"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.5"
@@ -125,29 +125,29 @@ export function HowItWorks() {
 
                 {/* Card */}
                 <div
-                  className="relative overflow-hidden rounded-2xl p-6 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[rgba(245,166,35,0.28)] group-hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
+                  className="relative overflow-hidden rounded-2xl p-6 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[rgba(240,160,32,0.28)] group-hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
                   style={{
-                    background: "rgba(17,24,39,0.7)",
-                    border: "1px solid rgba(245,166,35,0.1)",
+                    background: "rgba(30,20,9,0.75)",
+                    border: "1px solid rgba(240,160,32,0.1)",
                     backdropFilter: "blur(12px)",
                   }}
                 >
                   {/* Watermark number */}
                   <div
                     className="pointer-events-none absolute -right-2 -top-2 select-none font-heading text-[6rem] font-bold leading-none"
-                    style={{ color: "rgba(245,166,35,0.035)" }}
+                    style={{ color: "rgba(240,160,32,0.035)" }}
                   >
                     {number}
                   </div>
 
-                  <h3 className="mb-2.5 font-heading text-[1.2rem] font-semibold leading-snug text-[#E8DED0]">
+                  <h3 className="mb-2.5 font-heading text-[1.2rem] font-semibold leading-snug text-[#F2E9D6]">
                     {title}
                   </h3>
-                  <p className="mb-5 text-[13.5px] leading-relaxed text-[#8A9BB0]">{desc}</p>
+                  <p className="mb-5 text-[13.5px] leading-relaxed text-[#9A8C74]">{desc}</p>
 
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-[#F5A623]/15 bg-[#F5A623]/6 px-3 py-1">
-                    <div className="h-1 w-1 rounded-full bg-[#F5A623]" />
-                    <span className="text-[11px] font-medium text-[#F5A623]/75">{detail}</span>
+                  <div className="inline-flex items-center gap-1.5 rounded-full border border-[#F0A020]/15 bg-[#F0A020]/6 px-3 py-1">
+                    <div className="h-1 w-1 rounded-full bg-[#F0A020]" />
+                    <span className="text-[11px] font-medium text-[#F0A020]/75">{detail}</span>
                   </div>
                 </div>
               </div>

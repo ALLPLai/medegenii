@@ -51,7 +51,7 @@ export function FeaturesSection() {
     <section
       id="features"
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#090C18] py-28 md:py-36"
+      className="relative overflow-hidden bg-[#0C0805] py-28 md:py-36"
     >
       <ZelligePattern opacity={0.025} />
 
@@ -60,24 +60,24 @@ export function FeaturesSection() {
         style={{
           width: 700,
           height: 700,
-          background: "radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(240,160,32,0.06) 0%, transparent 70%)",
         }}
       />
 
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="sr-hidden mx-auto mb-16 max-w-xl text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F5A623]">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F0A020]">
             Fonctionnalités
           </p>
           <h2
-            className="font-heading font-light leading-tight text-[#E8DED0]"
+            className="font-heading font-light leading-tight text-[#F2E9D6]"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.2rem)" }}
           >
             L&apos;essentiel,{" "}
-            <em className="italic text-[#F5A623]">sans le superflu</em>
+            <em className="italic text-[#F0A020]">sans le superflu</em>
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-[#8A9BB0]">
+          <p className="mt-4 text-[15px] leading-relaxed text-[#9A8C74]">
             Chaque fonctionnalité résout un problème concret du cabinet médical marocain.
           </p>
         </div>
@@ -89,21 +89,21 @@ export function FeaturesSection() {
           <div
             className="sr-hidden group relative overflow-hidden rounded-3xl p-8 transition-all duration-300 hover:-translate-y-0.5 sm:row-span-2"
             style={{
-              background: "linear-gradient(160deg, rgba(245,166,35,0.09) 0%, rgba(13,18,33,0.95) 55%)",
-              border: "1px solid rgba(245,166,35,0.2)",
+              background: "linear-gradient(160deg, rgba(240,160,32,0.09) 0%, rgba(22,14,6,0.95) 55%)",
+              border: "1px solid rgba(240,160,32,0.2)",
             }}
           >
             <div
               className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%)" }}
+              style={{ background: "radial-gradient(circle, rgba(240,160,32,0.15) 0%, transparent 70%)" }}
             />
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F5A623]/30 bg-[#F5A623]/12 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(245,166,35,0.2)]">
-              <Bell className="h-5 w-5 text-[#F5A623]" />
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F0A020]/30 bg-[#F0A020]/12 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(240,160,32,0.2)]">
+              <Bell className="h-5 w-5 text-[#F0A020]" />
             </div>
-            <h3 className="mb-3 font-heading text-[1.4rem] font-semibold text-[#E8DED0]">
+            <h3 className="mb-3 font-heading text-[1.4rem] font-semibold text-[#F2E9D6]">
               Rappels H‑18 + H‑2
             </h3>
-            <p className="mb-7 text-[14px] leading-relaxed text-[#8A9BB0]">
+            <p className="mb-7 text-[14px] leading-relaxed text-[#9A8C74]">
               WhatsApp texte + audio darija automatique. Le patient n&apos;oublie plus jamais son RDV.
             </p>
 
@@ -112,7 +112,7 @@ export function FeaturesSection() {
               className="overflow-hidden rounded-2xl p-4"
               style={{ background: "rgba(11,20,9,0.8)", border: "1px solid rgba(255,255,255,0.05)" }}
             >
-              <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-[#8A9BB0]">
+              <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-[#9A8C74]">
                 Aperçu WhatsApp
               </p>
               <div className="space-y-2">
@@ -138,9 +138,9 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#F5A623]/15 bg-[#F5A623]/6 px-3 py-1">
-              <div className="h-1 w-1 rounded-full bg-[#F5A623]" />
-              <span className="text-[11px] text-[#F5A623]/75">Ouvre la fenêtre 24h Meta</span>
+            <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#F0A020]/15 bg-[#F0A020]/6 px-3 py-1">
+              <div className="h-1 w-1 rounded-full bg-[#F0A020]" />
+              <span className="text-[11px] text-[#F0A020]/75">Ouvre la fenêtre 24h Meta</span>
             </div>
           </div>
 
@@ -150,24 +150,24 @@ export function FeaturesSection() {
               key={title}
               className="sr-hidden group relative overflow-hidden rounded-2xl p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
               style={{
-                background: "rgba(17,24,39,0.75)",
-                border: "1px solid rgba(245,166,35,0.1)",
+                background: "rgba(30,20,9,0.8)",
+                border: "1px solid rgba(240,160,32,0.1)",
                 backdropFilter: "blur(10px)",
                 transitionDelay: `${(i + 1) * 80}ms`,
               }}
             >
               <div
                 className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100"
-                style={{ background: "radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%)" }}
+                style={{ background: "radial-gradient(circle, rgba(240,160,32,0.08) 0%, transparent 70%)" }}
               />
               <div
-                className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-[#F5A623]/20 bg-[#F5A623]/8 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#F5A623]/15"
-                style={{ borderColor: "rgba(245,166,35,0.2)" }}
+                className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-[#F0A020]/20 bg-[#F0A020]/8 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#F0A020]/15"
+                style={{ borderColor: "rgba(240,160,32,0.2)" }}
               >
-                <Icon className="h-[18px] w-[18px] text-[#F5A623]" />
+                <Icon className="h-[18px] w-[18px] text-[#F0A020]" />
               </div>
-              <h3 className="mb-2 font-heading text-[1.1rem] font-semibold text-[#E8DED0]">{title}</h3>
-              <p className="text-[13.5px] leading-relaxed text-[#8A9BB0]">{desc}</p>
+              <h3 className="mb-2 font-heading text-[1.1rem] font-semibold text-[#F2E9D6]">{title}</h3>
+              <p className="text-[13.5px] leading-relaxed text-[#9A8C74]">{desc}</p>
             </div>
           ))}
 
@@ -175,29 +175,29 @@ export function FeaturesSection() {
           <div
             className="sr-hidden group relative overflow-hidden rounded-3xl p-8 transition-all duration-300 hover:-translate-y-0.5 sm:col-span-1"
             style={{
-              background: "linear-gradient(160deg, rgba(26,65,138,0.1) 0%, rgba(13,18,33,0.95) 60%)",
-              border: "1px solid rgba(245,166,35,0.14)",
+              background: "linear-gradient(160deg, rgba(200,82,38,0.1) 0%, rgba(22,14,6,0.95) 60%)",
+              border: "1px solid rgba(240,160,32,0.14)",
               transitionDelay: "480ms",
             }}
           >
             <div
               className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%)" }}
+              style={{ background: "radial-gradient(circle, rgba(240,160,32,0.08) 0%, transparent 70%)" }}
             />
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F5A623]/25 bg-[#F5A623]/10 transition-all duration-300 group-hover:scale-110">
-              <Shield className="h-5 w-5 text-[#F5A623]" />
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F0A020]/25 bg-[#F0A020]/10 transition-all duration-300 group-hover:scale-110">
+              <Shield className="h-5 w-5 text-[#F0A020]" />
             </div>
-            <h3 className="mb-3 font-heading text-[1.4rem] font-semibold text-[#E8DED0]">
+            <h3 className="mb-3 font-heading text-[1.4rem] font-semibold text-[#F2E9D6]">
               Conforme CNDP
             </h3>
-            <p className="mb-6 text-[14px] leading-relaxed text-[#8A9BB0]">
+            <p className="mb-6 text-[14px] leading-relaxed text-[#9A8C74]">
               Consentement tracé, données hébergées en UE, audit complet. Loi 09-08 respectée.
             </p>
             <div className="flex flex-wrap gap-2">
               {["CNDP ✓", "Loi 09-08 ✓", "Données UE ✓", "Consentement tracé ✓"].map((b) => (
                 <span
                   key={b}
-                  className="rounded-full border border-[#F5A623]/15 bg-[#F5A623]/6 px-2.5 py-1 text-[10.5px] font-medium text-[#F5A623]/70"
+                  className="rounded-full border border-[#F0A020]/15 bg-[#F0A020]/6 px-2.5 py-1 text-[10.5px] font-medium text-[#F0A020]/70"
                 >
                   {b}
                 </span>

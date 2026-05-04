@@ -88,7 +88,7 @@ export function PricingSection() {
     <section
       id="pricing"
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#0C0F1D] py-28 md:py-36"
+      className="relative overflow-hidden bg-[#0F0B06] py-28 md:py-36"
     >
       {/* Top divider */}
       <div className="divider-gold mx-auto mb-20 max-w-6xl px-6" />
@@ -99,22 +99,22 @@ export function PricingSection() {
         style={{
           width: 500,
           height: 500,
-          background: "radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(240,160,32,0.07) 0%, transparent 65%)",
         }}
       />
 
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="sr-hidden mx-auto mb-16 max-w-xl text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F5A623]">Tarifs</p>
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F0A020]">Tarifs</p>
           <h2
-            className="font-heading font-light leading-tight text-[#E8DED0]"
+            className="font-heading font-light leading-tight text-[#F2E9D6]"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.2rem)" }}
           >
             Simple.{" "}
-            <em className="italic text-[#F5A623]">Transparent.</em>
+            <em className="italic text-[#F0A020]">Transparent.</em>
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-[#8A9BB0]">
+          <p className="mt-4 text-[15px] leading-relaxed text-[#9A8C74]">
             Pas d&apos;engagement, pas de frais cachés. Commencez gratuitement.
           </p>
         </div>
@@ -131,13 +131,13 @@ export function PricingSection() {
               }`}
               style={{
                 background: highlight
-                  ? "linear-gradient(160deg, rgba(245,166,35,0.1) 0%, rgba(17,24,39,0.97) 50%)"
-                  : "rgba(17,24,39,0.7)",
+                  ? "linear-gradient(160deg, rgba(240,160,32,0.1) 0%, rgba(28,18,8,0.97) 50%)"
+                  : "rgba(30,20,9,0.75)",
                 border: highlight
-                  ? "1px solid rgba(245,166,35,0.45)"
-                  : "1px solid rgba(245,166,35,0.12)",
+                  ? "1px solid rgba(240,160,32,0.45)"
+                  : "1px solid rgba(240,160,32,0.12)",
                 boxShadow: highlight
-                  ? "0 0 60px rgba(245,166,35,0.1), 0 30px 80px rgba(0,0,0,0.4)"
+                  ? "0 0 60px rgba(240,160,32,0.1), 0 30px 80px rgba(0,0,0,0.4)"
                   : "none",
                 transitionDelay: `${i * 100}ms`,
               }}
@@ -147,13 +147,13 @@ export function PricingSection() {
                 <>
                   <div
                     className="pointer-events-none absolute inset-0 animate-glow-pulse rounded-3xl"
-                    style={{ border: "1px solid rgba(245,166,35,0.3)" }}
+                    style={{ border: "1px solid rgba(240,160,32,0.3)" }}
                   />
                   <div
                     className="pointer-events-none absolute -inset-px rounded-3xl opacity-50"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(245,166,35,0.12) 0%, transparent 50%, rgba(245,166,35,0.06) 100%)",
+                        "linear-gradient(135deg, rgba(240,160,32,0.12) 0%, transparent 50%, rgba(240,160,32,0.06) 100%)",
                     }}
                   />
                 </>
@@ -161,12 +161,12 @@ export function PricingSection() {
 
               {/* Header row */}
               <div className="relative mb-6 flex items-center justify-between">
-                <h3 className="font-heading text-[1.3rem] font-semibold text-[#E8DED0]">{name}</h3>
+                <h3 className="font-heading text-[1.3rem] font-semibold text-[#F2E9D6]">{name}</h3>
                 <span
                   className={`rounded-full px-3 py-0.5 text-[11px] font-bold ${
                     badgeColor === "gold"
-                      ? "bg-[#F5A623]/15 text-[#F5A623]"
-                      : "bg-white/5 text-[#8A9BB0]"
+                      ? "bg-[#F0A020]/15 text-[#F0A020]"
+                      : "bg-white/5 text-[#9A8C74]"
                   }`}
                 >
                   {badge}
@@ -178,19 +178,19 @@ export function PricingSection() {
                 {period ? (
                   <div className="flex items-end gap-2">
                     <span
-                      className="font-heading font-light leading-none text-[#E8DED0]"
+                      className="font-heading font-light leading-none text-[#F2E9D6]"
                       style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}
                     >
                       {price}
                     </span>
-                    <span className="mb-1.5 text-[13px] text-[#8A9BB0]">{period}</span>
+                    <span className="mb-1.5 text-[13px] text-[#9A8C74]">{period}</span>
                   </div>
                 ) : (
-                  <span className="font-heading text-[2rem] font-light text-[#E8DED0]">{price}</span>
+                  <span className="font-heading text-[2rem] font-light text-[#F2E9D6]">{price}</span>
                 )}
               </div>
 
-              <p className="relative mb-6 text-[13.5px] leading-relaxed text-[#8A9BB0]">{desc}</p>
+              <p className="relative mb-6 text-[13.5px] leading-relaxed text-[#9A8C74]">{desc}</p>
 
               {/* Divider */}
               <div className="divider-gold relative mb-6" />
@@ -198,9 +198,9 @@ export function PricingSection() {
               {/* Features */}
               <ul className="relative mb-8 flex-1 space-y-3">
                 {features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#8A9BB0]">
+                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#9A8C74]">
                     <CheckCircle2
-                      className="mt-0.5 h-4 w-4 shrink-0 text-[#F5A623]"
+                      className="mt-0.5 h-4 w-4 shrink-0 text-[#F0A020]"
                     />
                     {f}
                   </li>
@@ -212,8 +212,8 @@ export function PricingSection() {
                 href={ctaHref}
                 className={`group relative inline-flex h-11 items-center justify-center gap-2 rounded-xl text-[14px] font-semibold transition-all duration-200 ${
                   highlight
-                    ? "bg-[#F5A623] text-[#0C0F1D] shadow-lg shadow-[#F5A623]/20 hover:bg-[#FFC554] hover:shadow-[#F5A623]/35 hover:-translate-y-px"
-                    : "border border-[#F5A623]/25 text-[#F5A623] hover:bg-[#F5A623]/8 hover:border-[#F5A623]/50"
+                    ? "bg-[#F0A020] text-[#0F0B06] shadow-lg shadow-[#F0A020]/20 hover:bg-[#FFB830] hover:shadow-[#F0A020]/35 hover:-translate-y-px"
+                    : "border border-[#F0A020]/25 text-[#F0A020] hover:bg-[#F0A020]/8 hover:border-[#F0A020]/50"
                 }`}
               >
                 {cta}
@@ -224,9 +224,9 @@ export function PricingSection() {
         </div>
 
         {/* Bottom note */}
-        <p className="sr-hidden mt-10 text-center text-[13px] text-[#8A9BB0]">
+        <p className="sr-hidden mt-10 text-center text-[13px] text-[#9A8C74]">
           Pas d&apos;engagement annuel · Annulation à tout moment ·{" "}
-          <a href="mailto:contact@medgenii.app" className="text-[#F5A623]/70 transition-colors hover:text-[#F5A623]">
+          <a href="mailto:contact@medgenii.app" className="text-[#F0A020]/70 transition-colors hover:text-[#F0A020]">
             contact@medgenii.app
           </a>
         </p>
